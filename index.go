@@ -117,7 +117,7 @@ func findCategory() {
 
 // create
 func createProduct() {
-	product := models.Product{Code: "testProduct", Price: 12000, Category: models.Category{Name: "Test Category 2"}}
+	product := models.Product{Code: "testProduct", Price: 12000, Quantity: 12, Category: models.Category{Name: "Test Category 2"}}
 
 	db.Model(models.Product{}).Create(&product)
 	db.Model(models.Product{}).Save(&product)
@@ -141,12 +141,14 @@ func createProduct() {
 		Name: "Test Category",
 		Products: []models.Product{
 			{
-				Code:  "Product 1",
-				Price: 120000,
+				Code:     "Product 1",
+				Price:    120000,
+				Quantity: 5,
 			},
 			{
-				Code:  "Product 2",
-				Price: 15000,
+				Code:     "Product 2",
+				Price:    15000,
+				Quantity: 3,
 			},
 		},
 	}
