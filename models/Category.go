@@ -6,8 +6,8 @@ import (
 
 type Category struct {
 	gorm.Model
-	Name     string    `gorm:"unique"`
-	Products []Product `gorm:"foreignkey:CategoryRefer"`
+	Name string `gorm:"unique"`
+	// Products []Product `gorm:"foreignkey:CategoryRefer"`
 }
 
 // func (category *Category) BeforeCreate(tx *gorm.DB) (err error) {

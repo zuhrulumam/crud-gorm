@@ -29,6 +29,14 @@
   revision = "04140366298a54a039076d798123ffa108fff46c"
 
 [[projects]]
+  branch = "master"
+  digest = "1:d62cb820efa9acfb3b7f91ce9c3541e8deb1b4d311f1392620a9715c3217c715"
+  name = "github.com/zuhrulumam/crud-gorm"
+  packages = ["models"]
+  pruneopts = "UT"
+  revision = "08cba4bdfab0dcd7b512362d9d66edfa9f32a423"
+
+[[projects]]
   digest = "1:c25289f43ac4a68d88b02245742347c94f1e108c534dda442188015ff80669b3"
   name = "google.golang.org/appengine"
   packages = ["cloudsql"]
@@ -42,6 +50,7 @@
   input-imports = [
     "github.com/jinzhu/gorm",
     "github.com/jinzhu/gorm/dialects/mysql",
+    "github.com/zuhrulumam/crud-gorm/models",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

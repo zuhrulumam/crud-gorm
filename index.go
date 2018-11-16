@@ -27,7 +27,7 @@ var id uint
 // }
 
 func main() {
-	db, err = gorm.Open("mysql", "ritx:ritx@tcp(localhost:3306)/ritx?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("mysql", "root:admin@tcp(localhost:3306)/ritx?charset=utf8&parseTime=True&loc=Local")
 
 	if err != nil {
 		panic(err)
@@ -37,18 +37,43 @@ func main() {
 
 	defer db.Close()
 
-	db.DropTableIfExists(models.Product{}, models.Category{})
+	db.Debug().DropTableIfExists(models.Product{}, models.Category{})
 
-	db.CreateTable(models.Product{}, models.Category{})
+	db.Debug().CreateTable(models.Product{}, models.Category{})
 
 	createProduct()
-	// findProducts()
+	findProducts()
 	// findProduct()
 	// updateProductCategory()
-	findProductWithAssociation()
+	// findProductWithAssociation()
 	// findCategory()
 	// updateProduct()
 	// deleteProduct()
+
+	// NewCreateCategory()
+	// NewCreateProduct()
+}
+
+// NewCreateProduct add product with existing category
+func NewCreateProduct() {
+
+	product := models.Product{Code: "Test", Price: 1000, Quantity: 1, Category: models.Category{Name: "Test Category 1"}}
+
+	db.Debug().Model(models.Product{}).Create(&product)
+	// db.Debug().Model(models.Product{}).Save(&product)
+	var Category models.Category
+
+	db.Model(models.Category{}).Preload("Products").First(&Category, "id = ?", 1)
+	fmt.Println(product)
+	// db.Debug().Model(&Category).Association("Products").Append(&product)
+
+}
+
+// NewCreateCategory create new category
+func NewCreateCategory() {
+	category := models.Category{Name: "Test Category"}
+
+	db.Debug().Model(models.Category{}).Create(&category)
 }
 
 // add before create and others
@@ -117,10 +142,10 @@ func findCategory() {
 
 // create
 func createProduct() {
-	product := models.Product{Code: "testProduct", Price: 12000, Quantity: 12, Category: models.Category{Name: "Test Category 2"}}
+	// product := models.Product{Code: "testProduct", Price: 12000, Quantity: 12, Category: models.Category{Name: "Test Category 2"}}
 
-	db.Model(models.Product{}).Create(&product)
-	db.Model(models.Product{}).Save(&product)
+	// db.Debug().Model(&models.Product{}).Create(&product)
+	// db.Debug().Model(&models.Product{}).Save(&product)
 
 	// // fmt.Println("id ", product.ID)
 	// id = product.ID
@@ -137,26 +162,35 @@ func createProduct() {
 
 	// instead of using product we use categories to create products
 
-	products := models.Category{
-		Name: "Test Category",
-		Products: []models.Product{
-			{
-				Code:     "Product 1",
-				Price:    120000,
-				Quantity: 5,
-			},
-			{
-				Code:     "Product 2",
-				Price:    15000,
-				Quantity: 3,
-			},
-		},
+	// products := models.Category{
+	// 	Name: "Test Category",
+	// 	Products: []models.Product{
+	// 		{
+	// 			Code:     "Product 1",
+	// 			Price:    120000,
+	// 			Quantity: 5,
+	// 		},
+	// 		{
+	// 			Code:     "Product 2",
+	// 			Price:    15000,
+	// 			Quantity: 3,
+	// 		},
+	// 	},
+	// }
+
+	// db.Debug().Model(models.Category{}).Create(&products)
+	// db.Model(models.Category{}).Save(&products)
+
+	product := models.Product{Code: "tes", Price: 1000, Quantity: 1}
+	if err := db.Debug().Model(models.Product{}).Create(&product).Error; err != nil {
+		panic(err)
 	}
-
-	db.Debug().Model(models.Category{}).Create(&products)
-	db.Model(models.Category{}).Save(&products)
-
-	fmt.Println("Products ", products)
+	fmt.Println("Products ", product)
+	category := models.Category{Name: "test"}
+	if err := db.Debug().Model(models.Category{}).Create(&category).Error; err != nil {
+		panic(err)
+	}
+	fmt.Println("Products ", category)
 }
 
 // find
